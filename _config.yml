@@ -2,3 +2,5 @@ theme: jekyll-theme-architect
 lang: ja-JP
 title: タイトル名
 google_analytics: 259187930
+pagenate: 5
+paginate_path: "/blog/page:num/"
