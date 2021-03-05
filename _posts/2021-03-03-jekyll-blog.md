@@ -46,7 +46,7 @@ MarkDown形式のファイルの先頭に、YAML形式のfront matterブロッ�
 |category <br/>categories|ポストをフォルダ分けする代わりに、１つ以上のカテゴリを設定できる。サイトにポストを生成する時に、これらのカテゴリが設定されているように振る舞います。||
 |tags|カテゴリによく似ており、1つ以上のタグをポストに追加できます||
 
-### イメージやリソースを含める
+### イメージや各種ファイル追加
 
 画像を挿入する
 ``` markdown
@@ -57,4 +57,99 @@ PDFリンク
 ``` markdown
 you can [get the PDF](/data/document.pdf) directory.
 ```
+
+### タグとカテゴリ
+
+#### タグ
+
+ポストのタグは一つだけなら`tag`、複数なら`tags`キーを利用して、front matterで指定します。
+例えば、`tag: classic hollywood` という指定であればタグは単一の"classic hollywood"として処理され、`tags: classic hollywood`の場合`["class","hollywood"]`という配列として処理されます。
+
+全てのタグはLiquidテンプレートでは`site.tags`で参照できます。ページ上で、`site.tags`から異なる二つのアイテムが得られます。
+
+``` html
+{% for tag in site.tags %}
+  <h3>{{ tag[0] }}</h3>
+  <ul>
+    {% for post in tag[1] %}
+      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+{% endfor %}
+
+```
+
+#### カテゴリ
+
+ポストのカテゴリは上記のタグと同様の働きをします。
+
+* front matterの`category`や`categories`キーで指定します。（タグと同じロジックに従います）
+* サイトに登録された全てのカテゴリは（上述のタグのforループと同様に）繰り返し処理可能な`site.categories`変数として、Liquidテンプレートに提供されます。
+
+#### タグとカテゴリの違い
+
+`_post`内のディレクトリはカテゴリとして扱われます。例えば、ポストのパスが
+
+`movies/horror/_posts/2019-05-21-bride-of-chucky.markdown`なら、自動で`movies`と`horror`がそのポストのカテゴリとなります。
+
+投稿にもカテゴリを定義するfront matterがある場合は、パスで指定されたものでなければ、既存のリストに追加されます。
+カテゴリとタグの特徴的な違いは、投稿のカテゴリが投稿の生成されたURLに組み込むことが可能ですが、タグはできません。
+
+front matterで
+
+`category: class hollywood`と指定した場合
+
+`movies/horror/classsic%20hollywood/2019/05/21/bride-of-chucky.html`
+
+`categories: classic hollywood`と指定した場合
+
+`movies/horror/classic/hollywood/2019/05/21/bride-of-chucky.html`
+
+#### ポストの抜粋
+
+ホストで`excerpt`変数を使用することで、抜粋にアクセスすることができます。デフォルトはポストの最初の段落ですが、
+front matterや`_config.yml`で`excerpt_separator`を設定することでカスタマイズできます。
+
+
+``` markdown
+
+---
+excerpt_separator: <!--more-->
+---
+
+Excerpt with multiple paragraphs
+
+Here's another paragraph in the excerpt.
+<!--more-->
+Out-of-excerpt
+``` 
+
+抜粋付きのブログポストのリストを出力する例
+
+``` html
+
+<ul>
+    {% for post in site.posts %}
+    <li>
+        <a href="{{ post.url }}">{{ post.title}}</a>
+        {{ post.excerpt }}
+    </li>
+    {% endfor %}
+</ul>
+
+```
+
+#### ドラフト
+
+ドラフトは、ファイル名に日付を含まないポストです。作業中で、まだ公開したくないポストです。ドラフトを立ち上げるには、サイトのrootに`_drafts`フォルダを作り、最初のドラフトを作成してください。
+
+```
+.
+├── _drafts
+│   └── a-draft-post.md
+...
+
+```
+
+
 
