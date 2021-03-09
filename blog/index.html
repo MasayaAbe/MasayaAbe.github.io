@@ -15,7 +15,7 @@ title: Masa's Blog
 
 <ul class="staff_members">
   {% for staff_member in site.staff_members %}
-    <h2>{{ staff_member.name }} - {{ staff_member.position }}</h2>
+    <li>{{ staff_member.name }} - {{ staff_member.position }}</li>
     <p>{{ staff_member.content | markdownify }}</p>
   {% endfor %} 
 </ul>
