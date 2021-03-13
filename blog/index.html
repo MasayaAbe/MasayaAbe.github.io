@@ -13,20 +13,20 @@ title: Masa's Blog
     
 </ul>
 
+<!-- staff_membersというコレクション動作テストコード
 <ul class="staff_members">
   {% for staff_member in site.staff_members %}
     <li>{{ staff_member.name }} - {{ staff_member.position }}</li>
     <p>{{ staff_member.content | markdownify }}</p>
   {% endfor %} 
 
+  {% for staff_member in site.staff_members %}
+    <h4>
+      <a href="{{ staff_member.url }}">
+        {{ staff_member.name }} - {{ staff_member.position }}
+      </a>
+    </h4>
+    <p>{{ staff_member.content | markdownify }}</p>
+  {% endfor %}
 
-{% for staff_member in site.staff_members %}
-  <h4>
-    <a href="{{ staff_member.url }}">
-      {{ staff_member.name }} - {{ staff_member.position }}
-    </a>
-  </h4>
-  <p>{{ staff_member.content | markdownify }}</p>
-{% endfor %}
-
-</ul>
+</ul> -->
